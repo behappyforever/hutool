@@ -1549,6 +1549,12 @@ public class FileUtil {
 		String pathToUse = StrUtil.removePrefixIgnoreCase(path, URLUtil.CLASSPATH_URL_PREFIX);
 		// 去除file:前缀
 		pathToUse = StrUtil.removePrefixIgnoreCase(pathToUse, URLUtil.FILE_URL_PREFIX);
+
+		// 识别home目录形式，并转换为绝对路径
+		if(pathToUse.startsWith("~")){
+			pathToUse = pathToUse.replace("~", getUserHomePath());
+		}
+
 		// 统一使用斜杠
 		pathToUse = pathToUse.replaceAll("[/\\\\]+", StrUtil.SLASH).trim();
 		//兼容Windows下的共享目录路径（原始路径如果以\\开头，则保留这种路径）
@@ -2325,7 +2331,7 @@ public class FileUtil {
 	 * @throws IORuntimeException IO异常
 	 */
 	public static List<String> readLines(URL url, String charset) throws IORuntimeException {
-		return readLines(url, charset, new ArrayList<String>());
+		return readLines(url, charset, new ArrayList<>());
 	}
 
 	/**
@@ -2337,7 +2343,7 @@ public class FileUtil {
 	 * @throws IORuntimeException IO异常
 	 */
 	public static List<String> readLines(URL url, Charset charset) throws IORuntimeException {
-		return readLines(url, charset, new ArrayList<String>());
+		return readLines(url, charset, new ArrayList<>());
 	}
 
 	/**
@@ -2361,7 +2367,7 @@ public class FileUtil {
 	 * @throws IORuntimeException IO异常
 	 */
 	public static List<String> readLines(String path, String charset) throws IORuntimeException {
-		return readLines(path, charset, new ArrayList<String>());
+		return readLines(path, charset, new ArrayList<>());
 	}
 
 	/**
@@ -2374,7 +2380,7 @@ public class FileUtil {
 	 * @since 3.1.1
 	 */
 	public static List<String> readLines(String path, Charset charset) throws IORuntimeException {
-		return readLines(path, charset, new ArrayList<String>());
+		return readLines(path, charset, new ArrayList<>());
 	}
 
 	/**
@@ -2398,7 +2404,7 @@ public class FileUtil {
 	 * @throws IORuntimeException IO异常
 	 */
 	public static List<String> readLines(File file, String charset) throws IORuntimeException {
-		return readLines(file, charset, new ArrayList<String>());
+		return readLines(file, charset, new ArrayList<>());
 	}
 
 	/**
@@ -2410,7 +2416,7 @@ public class FileUtil {
 	 * @throws IORuntimeException IO异常
 	 */
 	public static List<String> readLines(File file, Charset charset) throws IORuntimeException {
-		return readLines(file, charset, new ArrayList<String>());
+		return readLines(file, charset, new ArrayList<>());
 	}
 
 	/**
@@ -2493,22 +2499,6 @@ public class FileUtil {
 		}
 
 		return null;
-	}
-
-	/**
-	 * 按照给定的readerHandler读取文件中的数据
-	 *
-	 * @param <T>           集合类型
-	 * @param readerHandler Reader处理类
-	 * @param path          文件的绝对路径
-	 * @param charset       字符集
-	 * @return 从文件中load出的数据
-	 * @throws IORuntimeException IO异常
-	 * @deprecated 使用FileUtil#load(String, String, ReaderHandler) 代替
-	 */
-	@Deprecated
-	public static <T> T load(ReaderHandler<T> readerHandler, String path, String charset) throws IORuntimeException {
-		return FileReader.create(file(path), CharsetUtil.charset(charset)).read(readerHandler);
 	}
 
 	/**
