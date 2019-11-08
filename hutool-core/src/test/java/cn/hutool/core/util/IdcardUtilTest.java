@@ -1,11 +1,9 @@
 package cn.hutool.core.util;
 
-import cn.hutool.core.lang.Console;
-import org.junit.Assert;
-import org.junit.Test;
-
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * 身份证单元测试

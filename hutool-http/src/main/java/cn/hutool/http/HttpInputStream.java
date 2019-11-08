@@ -4,8 +4,9 @@ import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.zip.DeflaterInputStream;
 import java.util.zip.GZIPInputStream;
+import java.util.zip.Inflater;
+import java.util.zip.InflaterInputStream;
 
 import cn.hutool.core.util.StrUtil;
 
@@ -91,10 +92,6 @@ public class HttpInputStream extends InputStream {
 			return;
 		}
 		
-		// TODO 分段响应内容解析
-		if(response.isChunked()) {
-		}
-
 		if (response.isGzip() && false == (response.in instanceof GZIPInputStream)) {
 			// Accept-Encoding: gzip
 			try {
@@ -103,9 +100,9 @@ public class HttpInputStream extends InputStream {
 				// 在类似于Head等方法中无body返回，此时GZIPInputStream构造会出现错误，在此忽略此错误读取普通数据
 				// ignore
 			}
-		} else if (response.isDeflate() && false == (this.in instanceof DeflaterInputStream)) {
+		} else if (response.isDeflate() && false == (this.in instanceof InflaterInputStream)) {
 			// Accept-Encoding: defalte
-			this.in = new DeflaterInputStream(this.in);
+			this.in = new InflaterInputStream(this.in, new Inflater(true));
 		}
 	}
 }

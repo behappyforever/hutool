@@ -27,6 +27,18 @@ public class HttpUtilTest {
 
 	@Test
 	@Ignore
+	public void postTest2() {
+		// 某些接口对Accept头有特殊要求，此处自定义头
+		String result = HttpUtil
+				.createPost("http://cmp.ishanghome.com/cmp/v1/community/queryClusterCommunity")
+				.header(Header.ACCEPT, "*/*")
+				.execute()
+				.body();
+		Console.log(result);
+	}
+
+	@Test
+	@Ignore
 	public void getTest() {
 		String result1 = HttpUtil.get("http://photo.qzone.qq.com/fcgi-bin/fcg_list_album?uin=88888&outstyle=2", CharsetUtil.CHARSET_GBK);
 		Console.log(result1);
@@ -62,14 +74,6 @@ public class HttpUtilTest {
 	
 	@Test
 	@Ignore
-	public void getTest5() {
-		String res = HttpRequest.get("https://comment.bilibili.com/67573272.xml")
-				.execute().body();
-		Console.log(res);
-	}
-
-	@Test
-	@Ignore
 	public void get12306Test() {
 		String result = HttpUtil.get("https://kyfw.12306.cn/otn/");
 		Console.log(result);
@@ -98,6 +102,7 @@ public class HttpUtilTest {
 
 		// 请求下一页，检查Cookie是否复用
 		listContent = HttpUtil.get("https://www.oschina.net/action/ajax/get_more_news_list?newsType=&p=3");
+		Console.log(listContent);
 	}
 
 	@Test
